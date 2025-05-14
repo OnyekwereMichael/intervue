@@ -124,3 +124,22 @@ export async function signOut() {
     const cookieStore = await cookies();
     cookieStore.delete("session")
 }
+
+export async function getUserInterviewById(userid:string): Promise<Interview[] | null>  {
+  const interviews = await db.collection('interviews').where('userId', "==", userid).orderBy('createdAt', 'desc').get()
+
+  return interviews.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  })) as Interview[]
+}
+
+export async function getLatestInterviews(params: GetLatestInterviewsParams): Promise<Interview[] | null>  {
+    const {userId, limit = 20} = params
+  const interviews = await db.collection('interviews').orderBy('createdAt', 'desc').where('userId', "!=", userId).where('finalized', '==', true).limit(limit).get()
+
+  return interviews.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data()
+  })) as Interview[]
+}

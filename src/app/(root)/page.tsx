@@ -6,8 +6,17 @@ import Image from 'next/image'
 import { dummyInterviews } from '@/constants'
 import { Inter } from 'next/font/google'
 import InterviewCard from '../components/InterviewCard'
+import { getCurrentUser, getUserInterviewById } from '@/lib/actions/Auth.action'
 
-const page = () => {
+const page = async () => {
+  const user = await getCurrentUser()
+  const [userInterviews, latestInterviews] = await Promise.all([
+     await getUserInterviewById(user?.id),
+     await getUserInterviewById({userId: user?.id})
+  ])
+  // const userInterviews = await getUserInterviewById(user?.id)
+  const hasPastInterviews = userInterviews && userInterviews.length > 0
+  const hasUpcomingInterviews= latestInterviews && latestInterviews.length > 0
   return (
    <>
      <section className='card-cta'>
@@ -34,18 +43,30 @@ const page = () => {
            <div className='interviews-section'>
             {/* <p>You haven't taken any inerviews yet</p> */}
 
-            {dummyInterviews.map((interview) => (
-             <InterviewCard  {...interview} key={interview.id}/>
-            ))}
+            {hasPastInterviews ? (
+              userInterviews.map((interview) => (
+                <InterviewCard {...interview} key={interview.id}/>
+              ))
+            ) : (
+               <div>
+                 <p>You haven't taken any inerviews yet</p>
+               </div>
+            )}
            </div>
       </section>
 
       <section className='flex flex-col gap-6 mt-8'>
-        <h2 >Take an Interview</h2>
+        <h2>Take an Interview</h2>
         <div className='interviews-section'>
-        {dummyInterviews.map((interview) => (
-             <InterviewCard  {...interview} key={interview.id}/>
-            ))}
+         {hasUpcomingInterviews ? (
+              latestInterviews.map((interview) => (
+                <InterviewCard {...interview} key={interview.id}/>
+              ))
+            ) : (
+               <div>
+                 <p>There are no new interviews available 😪</p>
+               </div>
+            )}
            {/* <p>There are no Interviews available</p> */}
         </div>
       </section>
