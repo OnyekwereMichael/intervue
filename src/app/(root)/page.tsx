@@ -6,13 +6,21 @@ import Image from 'next/image'
 import { dummyInterviews } from '@/constants'
 import { Inter } from 'next/font/google'
 import InterviewCard from '../components/InterviewCard'
-import { getCurrentUser, getUserInterviewById } from '@/lib/actions/Auth.action'
+import { getLatestInterviews, getUserInterviewById } from '@/lib/actions/Root.action'
+import { getCurrentUser } from '@/lib/actions/Auth.action'
 
 const page = async () => {
   const user = await getCurrentUser()
+  if (!user) {
+  console.error('User is not authenticated');
+  return;
+}
+
+  console.log('the user', user.id);
+  
   const [userInterviews, latestInterviews] = await Promise.all([
      await getUserInterviewById(user?.id),
-     await getUserInterviewById({userId: user?.id})
+     await getLatestInterviews({userId: user?.id})
   ])
   // const userInterviews = await getUserInterviewById(user?.id)
   const hasPastInterviews = userInterviews && userInterviews.length > 0
@@ -24,7 +32,7 @@ const page = async () => {
         <h2 className='max-sm:leading-10'>Get Intervue-Ready with AI-Powered Pratice & Feedback</h2>
         <p className='text-gray-500'>Practice on real interview question & get instant feedbacks</p>
         <Button asChild className='btn-primary max-sm:w-full'>
-          <Link href={'/interview'}>Start an Interview</Link>
+          <Link href={'/Interview'}>Start an Interview</Link>
         </Button>
       </div>
 

@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { vapi } from '@/lib/vapi.sdk'
+import { interviewer } from '@/constants'
+import { createFeedback } from '@/lib/actions/Root.action'
 
 
  interface AgentProps {
@@ -29,7 +31,7 @@ interface SavedMessage {
  role: 'user' | 'assistant' | 'system'
  content: string
 }
-const Agents = ({userName, userId, type}: AgentProps) => {
+const Agents = ({userName, userId, type, interviewId, feedbackId, questions}: AgentProps) => {
   const router = useRouter()
   // const isSpeaking = true
   const isListening = false
@@ -53,7 +55,7 @@ const Agents = ({userName, userId, type}: AgentProps) => {
       setCallStatus(CallStatus.COMPLETED);
     };
 
-    const onMessage = (message: Message) => {
+    const onMessage = (message: any) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
         const newMessage = { role: message.role, content: message.transcript };
         setMessages((prev) => [...prev, newMessage]);
@@ -97,29 +99,29 @@ const Agents = ({userName, userId, type}: AgentProps) => {
     //   setLastMessage(messages[messages.length - 1].content);
     // }
 
-    // const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-    //   console.log("handleGenerateFeedback");
+    const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+      console.log("handleGenerateFeedback");
 
-    //   const { success, feedbackId: id } = await createFeedback({
-    //     interviewId: interviewId!,
-    //     userId: userId!,
-    //     transcript: messages,
-    //     feedbackId,
-    //   });
+      const { success, feedbackId: id } = await createFeedback({
+        interviewId: interviewId!,
+        userId: userId!,
+        transcript: messages,
+        feedbackId
+      });
 
-    //   if (success && id) {
-    //     router.push(`/interview/${interviewId}/feedback`);
-    //   } else {
-    //     console.log("Error saving feedback");
-    //     router.push("/");
-    //   }
-    // };
+      if (success && id) {
+        router.push(`/interview/${interviewId}/feedback`);
+      } else {
+        console.log("Error saving feedback");
+        router.push("/");
+      }
+    };
 
     if (callStatus === CallStatus.COMPLETED) {
       if (type === "generate") {
         router.push("/");
       } else {
-        // handleGenerateFeedback(messages);
+        handleGenerateFeedback(Messages);
       }
     }
   }, [Messages, callStatus, type, userId]);
@@ -136,8 +138,8 @@ const Agents = ({userName, userId, type}: AgentProps) => {
 
   console.log("Using workflowId:", workflowId);
 
-
-  await vapi.start(workflowId!, {
+  if(type === 'generate') {
+      await vapi.start(workflowId!, {
     clientMessages: [],
     serverMessages: [],
     variableValues: {
@@ -145,14 +147,30 @@ const Agents = ({userName, userId, type}: AgentProps) => {
       userid: userId,
     },
   });
-};
+  }else{
+     let formattedQuestions = "";
+      if (questions) {
+        formattedQuestions = questions
+          .map((question) => `- ${question}`)
+          .join("\n");
+      }
+
+      await vapi.start(interviewer, {
+        variableValues: {
+          questions: formattedQuestions,
+        },
+        clientMessages: [],
+        serverMessages: []
+      });
+    }
+}
 
 
 
-  const handleDisconnect = async () => {
-    setCallStatus(CallStatus.COMPLETED)
-     vapi.stop()
-  }
+const handleDisconnect = async () => {
+  setCallStatus(CallStatus.COMPLETED)
+   vapi.stop()
+}
 
   const latestMessage = Messages[Messages.length - 1]?.content
   const isCallInactiveorFinished = callStatus === CallStatus.INACTIVE || callStatus === CallStatus.COMPLETED
@@ -171,18 +189,24 @@ const Agents = ({userName, userId, type}: AgentProps) => {
 
       <div className='card-border'>
      <div className='card-content'>
-  <div className='flex items-center justify-center rounded-full size-[120px] bg-gray-300 text-white text-3xl font-semibold'>
-    {(() => {
-      const nameParts = userName.trim().split(' ');
-      if (nameParts.length === 1) {
-        // One-word name: Take first 2 letters
-        return nameParts[0].slice(0, 2).toUpperCase();
-      } else {
-        // Multi-word name: Take first letter of first two words
-        return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
-      }
-    })()}
-  </div>
+<div className='flex items-center justify-center rounded-full size-[120px] bg-gray-300 text-white text-3xl font-semibold'>
+  {(() => {
+    if (!userName) return 'NA';
+
+    const nameParts = userName.trim().split(' ').filter(Boolean);
+
+    if (nameParts.length === 0) {
+      return 'NA';
+    }
+
+    if (nameParts.length === 1) {
+      return nameParts[0].slice(0, 2).toUpperCase();
+    }
+
+    return (nameParts[0][0] + nameParts[1][0]).toUpperCase();
+  })()}
+</div>
+
   <h3 className='mt-2 text-lg font-medium text-center'>{userName}</h3>
 </div>
 
