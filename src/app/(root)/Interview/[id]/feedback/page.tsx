@@ -31,14 +31,14 @@ const page = async ({params}:RouteParams) => {
     <div>
          <section className="section-feedback">
       <div className="flex flex-row justify-center">
-        <h1 className="text-4xl font-semibold">
+        <h1 className="text-4xl font-semibold max-sm:text-2xl">
           Feedback on the Interview -{" "}
           <span className="capitalize">{interview.role}</span> Interview
         </h1>
       </div>
 
       <div className="flex flex-row justify-center ">
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-row gap-5 max-sm:flex-wrap">
           {/* Overall Impression */}
           <div className="flex flex-row gap-2 items-center">
             <Image src={stars} width={22} height={22} alt="star" />
@@ -69,7 +69,7 @@ const page = async ({params}:RouteParams) => {
 
       {/* Interview Breakdown */}
       <div className="flex flex-col gap-4">
-        <h2>Breakdown of the Interview:</h2>
+        <h2 className='max-sm:text-2xl'>Breakdown of the Interview:</h2>
         {feedback?.categoryScores?.map((category, index) => (
           <div key={index}>
             <p className="font-bold">
@@ -98,7 +98,7 @@ const page = async ({params}:RouteParams) => {
         </ul>
       </div>
 
-      <div className="buttons">
+      <div className="buttons max-sm:w-full">
         <Button className="btn-secondary flex-1">
           <Link href="/" className="flex w-full justify-center">
             <p className="text-sm font-semibold text-primary-200 text-center">
@@ -107,7 +107,7 @@ const page = async ({params}:RouteParams) => {
           </Link>
         </Button>
 
-        <Button className="btn-primary flex-1">
+        <Button className="btn-primary flex-1 max-sm:w-full">
           <Link
             href={`/interview/${id}`}
             className="flex w-full justify-center"
