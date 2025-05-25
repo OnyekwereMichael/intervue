@@ -1,7 +1,5 @@
-import { IoReloadCircle } from 'react-icons/io5';
-
 const Loader = () => (
-  <IoReloadCircle className="animate-spin w-5 h-5 text-white" />
+  <span className="inline-block w-4 h-4 border-2 border-t-transparent border-gray-600 rounded-full animate-spin"></span>
 );
 
 export default Loader;

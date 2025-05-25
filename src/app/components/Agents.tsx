@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { vapi } from '@/lib/vapi.sdk'
 import { interviewer } from '@/constants'
 import { createFeedback } from '@/lib/actions/Root.action'
+import CallingIndicator from './CallingIndicator'
 
 
  interface AgentProps {
@@ -110,7 +111,7 @@ const Agents = ({userName, userId, type, interviewId, feedbackId, questions}: Ag
       });
 
       if (success && id) {
-        router.push(`/interview/${interviewId}/feedback`);
+        router.push(`/Interview/${interviewId}/feedback`);
       } else {
         console.log("Error saving feedback");
         router.push("/");
@@ -227,7 +228,7 @@ const handleDisconnect = async () => {
         <span className={cn('absolute animate-ping  rounded-full  opacity-75 ', callStatus !== CallStatus.CONNECTING && 'hidden')}/>
 
         <span>
-        {isCallInactiveorFinished ? 'Call' : '. . .'}
+        {isCallInactiveorFinished ? 'Call' : <CallingIndicator />}
         </span>
 
         

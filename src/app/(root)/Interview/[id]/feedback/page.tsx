@@ -113,7 +113,7 @@ const page = async ({params}:RouteParams) => {
             className="flex w-full justify-center"
           >
             <p className="text-sm font-semibold text-black text-center">
-            <Link href={`Interview/${id}`}>Retake Interview</Link> 
+            <Link href={`/`}>Retake Interview</Link> 
             </p>
           </Link>
         </Button>

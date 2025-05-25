@@ -3,6 +3,11 @@
 import { auth, db } from "@/app/firebase/Admin";
 import { cookies } from "next/headers";
 
+type CurrentUser = {
+  id: string;
+  username: string;
+  // add more fields if needed
+}
 
 const ONE_WEEK = 60 * 60 * 24 * 7 * 1000;
 export async function signUp(params: SignUpParams) {
@@ -83,7 +88,7 @@ export async function signIn(params: SignInParams) {
     }
 }
 
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<CurrentUser | null> {
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get("session")?.value;
 
@@ -98,7 +103,7 @@ export async function getCurrentUser() {
             return null;
         }
         return {
-            ...userRecord.data(),
+           ...(userRecord.data() as Omit<CurrentUser, 'id'>),
             id: userRecord.id,
         };
     } catch (error: any) {

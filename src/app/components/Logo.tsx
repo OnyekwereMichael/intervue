@@ -54,7 +54,7 @@ export default function Logo() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-400 tracking-tight"
         >
-          Ask<span className="text-purple-600">Me</span>
+          Ask<span className="text-purple-600">bot</span>
         </motion.h1>
       </div>
 

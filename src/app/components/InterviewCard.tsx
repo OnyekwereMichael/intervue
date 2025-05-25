@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import DisplayTechIcon from './DisplayTechIcon'
 import { getFeedbackByInterviewId } from '@/lib/actions/Root.action'
+import InterviewButton from './InterviewButton'
 
 const InterviewCard = async ({id, userId, role, type, techstack, createdAt}:InterviewCardProps) => {
     const feedback = userId && id ? await getFeedbackByInterviewId({interviewId: id, userId}) : null
@@ -38,9 +39,7 @@ const InterviewCard = async ({id, userId, role, type, techstack, createdAt}:Inte
            <div className='flex flex-row  justify-between items-center mt-4'>
             {/* <p className='text-gray-500'>Tech Icons</p> */}
             <DisplayTechIcon techStack={techstack}/>
-            <Button  className='btn-primary'>
-              <Link href={feedback ? `/Interview/${id}/feedback` : `Interview/${id}`} className='w-full'>{feedback ? 'Check Feedback' : 'View Interview'}</Link>
-            </Button>  
+            <InterviewButton feedback={feedback} id={id || ''} />
            </div>
         </div>
       </div>
