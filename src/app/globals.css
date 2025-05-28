@@ -146,10 +146,10 @@
     @apply text-light-100;
   }
   h2 {
-    @apply text-3xl font-semibold;
+    @apply text-2xl font-semibold;
   }
   h3 {
-    @apply text-2xl font-semibold;
+    @apply text-[22px] font-semibold;
   }
   ul {
     @apply list-disc list-inside;
@@ -333,3 +333,4 @@
     transform: translateY(0);
   }
 }
+

@@ -2,6 +2,8 @@
 
 import { auth, db } from "@/app/firebase/Admin";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 type CurrentUser = {
   id: string;
@@ -108,6 +110,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
         };
     } catch (error: any) {
         console.error("Error verifying session cookie:", error);
+       
         return null;
     }
 }
@@ -121,12 +124,17 @@ export async function isAuthenticated() {
         }
     }
 
-    return !!user
+    return {
+    isAuthenticated: !!user,
+    user: user || null
+  }
+    // return !!user
 
 }
 
 export async function signOut() {
     const cookieStore = await cookies();
     cookieStore.delete("session")
+    redirect('/sign-in')
 }
 
