@@ -8,9 +8,9 @@ const AuthLayout = async ({children}:{children: ReactNode}) => {
   if (auth) redirect('/')
 
   return (
-    <div className='auth-layout'>
+    <>
        {children}
-    </div>
+    </>
   )
 }
 

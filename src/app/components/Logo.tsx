@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Logo_ from '../../../public/logo.svg';
 import Image from "next/image";
 
+
 const phrases = [
   "Empowering interviews, one question at a time.",
   "Crafting better conversations for success.",
@@ -45,23 +46,23 @@ export default function Logo() {
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Image src={Logo_} alt="Logo" />
+          <Image src={Logo_} alt="Logo" className="w-[40px] h-[40px]"/>
         </motion.div>
 
-        <motion.h1
+        <motion.p
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-400 tracking-tight"
+          className="text-2xl md:text-4xl font-bold text-white tracking-tight"
         >
-          Ask<span className="text-purple-600">bot</span>
-        </motion.h1>
+          Ask<span className="text-white">bot</span>
+        </motion.p>
       </div>
 
-      <p className="text-sm md:text-base text-gray-500 text-center h-6 md:h-7">
+      {/* <p className="text-sm md:text-base text-gray-500 text-center h-6 md:h-7">
         {text}
         <span className="animate-pulse">|</span>
-      </p>
+      </p> */}
     </div>
   );
 }
