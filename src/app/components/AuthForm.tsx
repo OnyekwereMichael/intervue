@@ -235,7 +235,7 @@ const AuthForm = ({ type }: { type: string }) => {
               </div>
               <ErrorMessage name="password" component="div" className="text-red-500 mt-1 text-sm" />
 
-              <Link href="#" className="text-purple-400 text-sm font-semibold text-left">
+              <Link href="#" className="text-purple-400 text-sm font-semibold text-left max-sm:text-white">
                 Forgot Password?
               </Link>
 
