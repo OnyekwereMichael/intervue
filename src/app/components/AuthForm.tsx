@@ -188,7 +188,7 @@ const AuthForm = ({ type }: { type: string }) => {
     >
         <h2 className="text-purple-600 max-sm:text-white text-3xl lg:text-4xl font-bold tracking-wide mb-2">{text}
         <span className="animate-pulse">|</span></h2>
-        <p className="text-gray-500 text-base lg:text-[1rem] font-normal mb-10 mt-2">Enter details to login.</p>
+        <p className="text-gray-500 max-sm:text-white text-base lg:text-[1rem] font-normal mb-10 mt-2">Enter details to login.</p>
 
         <Formik
           initialValues={initialValues}
