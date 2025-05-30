@@ -186,7 +186,7 @@ const AuthForm = ({ type }: { type: string }) => {
         isSignIn ? 'max-sm:pt-[85px]' : 'max-sm:pt-[148px]'
       } max-sm:mb-4`}
     >
-        <h2 className="text-purple-600 text-3xl lg:text-4xl font-bold tracking-wide mb-2">{text}
+        <h2 className="text-purple-600 max-sm:text-white text-3xl lg:text-4xl font-bold tracking-wide mb-2">{text}
         <span className="animate-pulse">|</span></h2>
         <p className="text-gray-500 text-base lg:text-[1rem] font-normal mb-10 mt-2">Enter details to login.</p>
 
