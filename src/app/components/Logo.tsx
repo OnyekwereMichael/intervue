@@ -55,7 +55,7 @@ export default function Logo() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-2xl md:text-4xl font-bold text-white tracking-tight"
         >
-          Ask<span className="text-white">bot</span>
+          Nex<span className="text-white">view</span>
         </motion.p>
       </div>
 

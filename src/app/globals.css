@@ -264,7 +264,7 @@
   }
 
   .root-layout {
-    @apply flex mx-auto max-w-7xl flex-col gap-12 my-12 px-16 max-sm:px-4 max-sm:my-8;
+    @apply flex mx-auto max-w-7xl flex-col gap-12 my-12 px-16 max-sm:px-4 max-sm:my-6;
   }
 
   .card-cta {
@@ -335,3 +335,29 @@
   }
 }
 
+
+
+@keyframes fadeInSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInSlideUp {
+  animation-name: fadeInSlideUp;
+  animation-duration: 600ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animation delays */
+.animation-delay-\[100ms\] { animation-delay: 100ms; }
+.animation-delay-\[300ms\] { animation-delay: 300ms; }
+.animation-delay-\[500ms\] { animation-delay: 500ms; }
+.animation-delay-\[700ms\] { animation-delay: 700ms; }
+.animation-delay-\[900ms\] { animation-delay: 900ms; }
