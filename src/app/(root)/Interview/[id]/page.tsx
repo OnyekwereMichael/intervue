@@ -24,7 +24,7 @@ const  InterviewDetails = async ({params}: RouteParams) => {
         <div className='flex flex-row items-center gap-4 max-sm:flex-col'>
             <div className='flex flex-row gap-4 items-center'>
                  <Image src={getRandomInterviewCover()} alt='random_Img' width={40} height={40} className='rounded-full size-[40px] object-cover'/> 
-                 <h3 className='capittalize '>{Interview.role} Interview</h3>
+                 <h3 className='capittalize '>{Interview.role}</h3>
             </div>
              <DisplayTechIcon techStack={Interview.techstack}/>
         </div>

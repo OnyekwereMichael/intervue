@@ -33,7 +33,7 @@ const page = async ({params}:RouteParams) => {
       <div className="flex flex-row justify-center">
         <h1 className="text-4xl font-semibold max-sm:text-2xl">
           Feedback on the Interview -{" "}
-          <span className="capitalize">{interview.role}</span> <span className='max-sm:hidden'>Interview</span>
+          <span className="capitalize">{interview.role}</span> Interview
         </h1>
       </div>
 
