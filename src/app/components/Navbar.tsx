@@ -43,7 +43,7 @@ const Navbar = ({ isAuthenticated }: NavbarProps) => {
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Image src={Logo_} alt='Logo' className='w-[40px] h-[40px] max-sm:w-[30px] max-sm:h-[30px]' />
+            <Image src={Logo_} alt='Logo' className='w-[40px] h-[40px] max-sm:w-[35px] max-sm:h-[35px]' />
           </motion.div>
 
           <motion.h1
