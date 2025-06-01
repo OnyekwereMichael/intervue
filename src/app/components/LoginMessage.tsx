@@ -10,7 +10,7 @@ const LoginMessage = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center justify-center text-center px-4  card-border dark-gradient pb-10 min-h-full border-1 border-primary-200/50 rounded-xl shadow-sm"
+      className="flex flex-col items-center justify-center text-center px-4  card-border dark-gradient pb-10 min-h-full border-1 border-primary-200/50 rounded-xl shadow-sm max-sm:w-full"
     >
       <motion.div
         animate={{ scale: [1, 1.1, 1] }}
@@ -25,12 +25,12 @@ const LoginMessage = () => {
         />
       </motion.div>
 
-      <h3 className="text-xl font-semibold text-white mb-2">
+      <h3 className="text-lg font-semibold text-white mb-2 max-sm:text-[16px]">
         Sign In to Access Your Interviews
       </h3>
 
-      <p className="text-white mb-6">
-      Track progress and past interviews by signing in
+      <p className="text-white mb-6 max-sm:text-sm">
+      Sign in to track interviews
       </p>
 
       <AnimatedSignInButton />
