@@ -133,8 +133,18 @@ export async function isAuthenticated() {
 }
 
 export async function signOut() {
-    const cookieStore = await cookies();
-    cookieStore.delete("session")
-    redirect('/sign-in')
+    try {
+        const cookieStore = await cookies();
+        // Delete the session cookie
+        cookieStore.delete("session");
+        // Force revalidation of auth state
+        await auth.revokeRefreshTokens(cookieStore.get("session")?.value || "");
+        // Redirect to sign-in page
+        redirect('/sign-in');
+    } catch (error) {
+        console.error("Error signing out:", error);
+        // Still redirect even if there's an error
+        redirect('/sign-in');
+    }
 }
 

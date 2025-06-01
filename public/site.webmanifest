@@ -1,0 +1,14 @@
+{
+  "name": "Nexview AI",
+  "short_name": "Nexview",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#6366f1",
+  "background_color": "#18181b",
+  "display": "standalone"
+} 

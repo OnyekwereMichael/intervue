@@ -109,11 +109,11 @@ const page = async ({params}:RouteParams) => {
 
         <Button className="btn-primary flex-1 max-sm:w-full">
           <Link
-            href={`/interview/${id}`}
+            href={`/Interview/${id}`}
             className="flex w-full justify-center"
           >
-            <p className="text-sm font-semibold text-black text-center">
-            <Link href={`/`}>Retake Interview</Link> 
+            <p className="textsm font-semibold text-black text-center">
+              Retake Interview
             </p>
           </Link>
         </Button>

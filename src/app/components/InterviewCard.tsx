@@ -14,7 +14,7 @@ const InterviewCard = async ({id, userId, role, type, techstack, createdAt}:Inte
     const normalizedType = /mix/gi.test(type) ? 'Mixed' : type 
     const formattedDate = dayjs(feedback?.createdAt || createdAt || Date.now()).format('MMM D, YYYY')
   return (
-    <div className='card-border w-[360px] max-sm:w-full min-h-96 max-sm:h-full max-sm:min-h-0 max-sm:my-[2px]'>
+    <div className='card-border w-[360px] max-sm:w-full h-full max-sm:h-full max-sm:min-h-0 max-sm:my-[2px]'>
       <div className='card-interview'>
         <div>
            <div className='absolute top-0 right-0 w-fit px-4 py-2 rounded-bl-lg bg-light-600'>

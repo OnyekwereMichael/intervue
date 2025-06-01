@@ -9,18 +9,32 @@ import { signOut } from '@/lib/actions/Auth.action'
 import { useRouter } from 'next/navigation'
 import Loader from './Loader'
 import { FiLogOut, FiMenu } from 'react-icons/fi'
+import AnimatedSignInButton from './AnimatedSignInButton'
 
-
-const Navbar = () => {
-    const [loading, setLoading] = useState(false)
-     const [menuOpen, setMenuOpen] = useState(false)
-  const router = useRouter()
-  const handleSignOut = async () => {
-    setLoading(true)
-  await signOut()
+interface NavbarProps {
+  isAuthenticated: boolean;
 }
+
+const Navbar = ({ isAuthenticated }: NavbarProps) => {
+  const [loading, setLoading] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const router = useRouter()
+
+  const handleSignOut = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (loading) return; // Prevent double clicks
+    
+    try {
+      setLoading(true);
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+      router.push('/sign-in');
+    }
+  }
+
   return (
-    <nav className='flex items-center justify-between  py-4 shadow-md max-sm:px-0 max-sm:py-0'>
+    <nav className='flex items-center justify-between py-4 shadow-md max-sm:px-0 max-sm:py-0'>
       {/* Logo + Heading */}
       <Link href='/' className='flex items-center gap-2'>
         <div className='flex items-center gap-2'>
@@ -43,39 +57,51 @@ const Navbar = () => {
         </div>
       </Link>
 
-      {/* Logout Button */}
-      <form>
-        <button
-        onClick={() =>handleSignOut()}
-          type='submit'
-          className='bg-purple-600 text-white px-4 py-2 rounded-md font-semibold shadow hover:shadow-lg transition-transform hover:scale-105 cursor-pointer max-sm:hidden'
-        >
-        {loading ? <Loader /> : 'Logout'}  
-        </button>
-      </form>
+      {/* Only show these elements if authenticated */}
+      {isAuthenticated && (
+        <div className="flex items-center gap-4">
+          {/* Logout Button - Hidden on mobile */}
+          <button
+            onClick={handleSignOut}
+            disabled={loading}
+            className='max-sm:hidden bg-purple-600 text-white px-4 py-2 rounded-md font-semibold shadow hover:shadow-lg transition-transform hover:scale-105 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
+          >
+            {loading ? <Loader /> : 'Logout'}
+          </button>
 
-      {/* Mobile Menu */}
-      <div className='sm:hidden relative'>
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className='p-2 text-purple-600'
-        >
-          <FiMenu size={24} />
-        </button>
-
-        {/* Dropdown menu */}
-        {menuOpen && (
-          <div className='absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-md z-50'>
+          {/* Mobile Menu - Only visible on mobile */}
+          <div className="relative sm:hidden">
             <button
-              onClick={handleSignOut}
-              className='flex items-center gap-2 w-full px-4 py-2 text-sm text-purple-600 hover:bg-gray-100'
+              onClick={() => !loading && setMenuOpen(!menuOpen)}
+              className='p-2 text-purple-600'
+              disabled={loading}
             >
-              {loading ? <Loader /> : <><FiLogOut size={18} /> Logout</>}
+              <FiMenu size={24} />
             </button>
-          </div>
-        )}
-      </div>
 
+            {/* Dropdown menu */}
+            {menuOpen && (
+              <div className='absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-md z-50'>
+                <button
+                  onClick={handleSignOut}
+                  disabled={loading}
+                  className='flex items-center gap-2 w-full px-4 py-2 text-sm text-purple-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed'
+                >
+                  {loading ? <Loader /> : <><FiLogOut size={18} /> Logout</>}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Show Sign In button if not authenticated */}
+      {!isAuthenticated && (
+        <AnimatedSignInButton 
+          className="bg-purple-600 text-white px-4 py-2 rounded-md font-semibold shadow hover:shadow-lg transition-transform hover:scale-105"
+          text="Sign In"
+        />
+      )}
     </nav>
   )
 }

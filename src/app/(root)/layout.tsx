@@ -1,18 +1,14 @@
-import  { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import Navbar from '../components/Navbar'
-import { isAuthenticated } from '@/lib/actions/Auth.action';
-import { redirect } from 'next/navigation';
+import { isAuthenticated } from '@/lib/actions/Auth.action'
 
 const RootLayout = async ({children}:{children: ReactNode}) => {
-   const { isAuthenticated: auth } = await isAuthenticated()
+  const { isAuthenticated: auth } = await isAuthenticated();
 
-  if (!auth) {
-    redirect('/sign-in')
-  }
   return (
     <div className='root-layout'>
-      <Navbar />
-       {children}
+      <Navbar isAuthenticated={auth} />
+      {children}
     </div>
   )
 }
