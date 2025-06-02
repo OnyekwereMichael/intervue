@@ -128,43 +128,80 @@ const Agents = ({userName, userId, type, interviewId, feedbackId, questions}: Ag
   }, [Messages, callStatus, type, userId]);
 
   const handleCall = async () => {
-  setCallStatus(CallStatus.CONNECTING);
+    try {
+      setCallStatus(CallStatus.CONNECTING);
 
-  const workflowId = process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID;
+      const workflowId = process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID;
 
-  if (!workflowId) {
-    console.error("VAPI workflow ID is not defined in environment variables.");
-    return;
-  }
-
-  console.log("Using workflowId:", workflowId);
-
-  if(type === 'generate') {
-      await vapi.start(workflowId!, {
-    clientMessages: [],
-    serverMessages: [],
-    variableValues: {
-      username: userName,
-      userid: userId,
-    },
-  });
-  }else{
-     let formattedQuestions = "";
-      if (questions) {
-        formattedQuestions = questions
-          .map((question) => `- ${question}`)
-          .join("\n");
+      if (!workflowId) {
+        console.error("VAPI workflow ID is not defined in environment variables.");
+        return;
       }
 
-      await vapi.start(interviewer, {
-        variableValues: {
-          questions: formattedQuestions,
-        },
-        clientMessages: [],
-        serverMessages: []
-      });
+      console.log("Using workflowId:", workflowId);
+
+      try {
+        if(type === 'generate') {
+          await vapi.start(workflowId!, {
+            clientMessages: [],
+            serverMessages: [],
+            variableValues: {
+              username: userName,
+              userid: userId,
+            },
+            
+          });
+        } else {
+          let formattedQuestions = "";
+          if (questions) {
+            formattedQuestions = questions
+              .map((question) => `- ${question}`)
+              .join("\n");
+          }
+
+          await vapi.start(interviewer, {
+            variableValues: {
+              questions: formattedQuestions,
+            },
+            clientMessages: [],
+            serverMessages: []
+          });
+        }
+      } catch (firstError) {
+        console.log("First attempt failed, retrying...");
+        // Wait 1 second before retry
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        if(type === 'generate') {
+          await vapi.start(workflowId!, {
+            clientMessages: [],
+            serverMessages: [],
+            variableValues: {
+              username: userName,
+              userid: userId,
+            },
+          });
+        } else {
+          let formattedQuestions = "";
+          if (questions) {
+            formattedQuestions = questions
+              .map((question) => `- ${question}`)
+              .join("\n");
+          }
+
+          await vapi.start(interviewer, {
+            variableValues: {
+              questions: formattedQuestions,
+            },
+            clientMessages: [],
+            serverMessages: []
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error starting call:', error);
+      setCallStatus(CallStatus.INACTIVE);
     }
-}
+  };
 
 
 
